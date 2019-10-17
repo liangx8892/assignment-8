@@ -1,0 +1,120 @@
+Git repository used in this assignment is: https://github.com/liangx8892/assignment-8.git
+
+Maven Assignment
+------------------------------------------------------------------------------------------------------------
+Assuming, you have GIT, tomcat, maven setup in your development environment; do the following:
+1.At command prompt, what will be command to generate archetypes? Run this command so that you can generate the list of archetypes.
+	Run command # mvn archetype:generate 
+2.At command prompt, what will be command to create a new maven project with archetype whose description is following:
+	a.”A basic starter template using springboot, jpa data, thymeleaf and MVC”
+	b.Run this command with the number for correct archetype so that new default project is created with springboot, jpa, thymeleaf and MVC.
+		Run command # mvn archetype:generate and select related number from the list of archetypes which description is ‘springboot, jpa, thymeleaf and MVC’
+3.Once the project is created with the required template:
+	a.What will be the command to compile the project? 
+		Run command # mvn compile
+	b.What will be the command to  package the built project?
+		Run command # mvn package
+	c.What will be command to execute the jar which is created by above command?
+		i.After executing the jar, you should be able to test the REST API in any browser window.
+		Run command # mvn spring-boot:run
+	d.What will be command to clean all the compiled class files and jar files in target folder?
+		Run command # mvn clean
+	e.Change POM.xml to create war executable in place of jar executable in the above project. Run the command to create .war executable.
+		Change <packaging>jar</packaging> to be <packaging>war</packaging>
+		Run command # mvn package
+4.Install tomcat in local development environment.
+	a.Create manager user in tomcat by creating the config entry in tomcat-users.xml
+	Add following into tomcat-users.xml
+	<role rolename="manager-gui"/>
+	<role rolename="manager-script"/>
+	<role rolename="manager-jmx"/>
+	<role rolename="manager-status"/>
+	<user username="admin" password=“admin” roles="manager-gui,manager-script,manager-jmx,manager-status"/>
+
+	b.Deploy the war created in step 3.e in Apache Tomcat and access the REST API endpoint exposed by the deployed war.
+		1. Open http://localhost:8080/manager/html
+		2. Enter ‘admin’ as user name and ‘admin’ as password to login tomcat manager UI.
+		3. Specify Context Path of the application, e.g. user-management
+		4. Specify WAR or Directory path, e.g. ~/user-management-assignment6/target/user-management.war
+		i.Hints:
+			1.You may need to add following dependency in the project
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<scope>provided</scope>
+				</dependency>
+			2.And, you may need to add following code to Spring Boot Main Class.
+				@SpringBootApplication
+				public class Application  extends SpringBootServletInitializer{
+					public static void main(String[] args) {
+						SpringApplication.run(Application.class, args);
+					}
+				}
+			3.SpringBootServletInitializer is imported from org.springframework.boot.web.servlet.support.SpringBootServletInitializer
+			5.Jetty is the light weight servlet container. Add jetty dependency to the POM.xml
+			a.You can get the Jetty dependency from https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-maven-plugin
+			b.Execute the project using jetty
+			Add following into pom.xml and then run # mvn jetty:run
+			<plugin>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-maven-plugin</artifactId>
+			    <version>9.3.11.v20160721</version>
+			</plugin>
+
+
+
+GIT Assignment
+------------------------------------------------------------------------------------------------------------
+1.Create a new maven project with default archetype.
+	Run command # mvn archetype:generate and then select “7: internal -> org.apache.maven.archetypes:maven-archetype-quickstart” from the list
+	
+2.Compile the project and generate jar/war file for the project using maven at command prompt.
+	Run command # mvn clean package
+3.Initialize the newly created project as a GIT repository
+	Run following commands:
+	# cd assignment-8/
+	# git init
+4.Commit the repository to the internal GIT server. Ask your mentor for internal GIT URL to be used in assignment.
+	Run following commands:
+	# git add *
+	# git commit -m "initial commit."
+	# git remote add origin https://github.com/liangx8892/assignment-8.git
+	# git push -u origin master
+5.Currently all files are committed to remote repository. Configure the local repository such that target folder is not committed from local repository to remote repository.
+	Run following commands:
+	# echo 'target/' > .gitignore
+6.Delete the “target” folder from the remote repository which was committed in step 4.
+	After deleting target, Run following commands:
+	# git pull
+7.Create a new branch “welcomeapi” in the local repository.
+	Run following command:
+	# git checkout -b welcomeapi
+	a.Make changes to the source code i.e. add a new url (/welcome) to the rest controller
+		Make changes to src/main/java/com/xiongl/App.java
+	b.Now, push the change from local repository to remote repository in the branch “welcomeapi”
+		Run following commands:
+		# git add src/main/java/com/xiongl/App.java
+		# git commit -m "make some changes in welcomeapi branch"
+		# git push -u origin welcomeapi
+	c.You must not push these changes to main branch in remote repository.
+	d.Locally, merge the changes done welcomeapi branch to main branch. 
+		Run following commands:
+		# git checkout master
+		# git merge --no-ff welcomeapi
+	e.Push the changes from local repository to remote repository.
+		Run following commands:
+		# git push origin master
+	f.Once the changes are merged and pushed to the remote copy of repository on GIT server, delete the branch welcomeapi.
+		Run following commands:
+		# git push origin --delete welcomeapi
+		# git branch --delete welcomeapi
+		# git branch -dr origin/welcomeapi
+
+
+
+
+Junit Assignment
+------------------------------------------------------------------------------------------------------------
+Consider the following Calculation class created by developers:
+Write a Junit Test case to test the above class for the business logic
+	The link of unit test class: https://github.com/liangx8892/assignment-8/blob/master/src/test/java/com/xiongl/CalculationTest.java
